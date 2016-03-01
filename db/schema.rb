@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160301110229) do
     t.integer  "rating"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "location"
     t.text     "description"
   end
 
