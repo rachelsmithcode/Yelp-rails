@@ -1,14 +1,11 @@
 require 'rails_helper.rb'
+require_relative 'web_helper.rb'
 
 feature 'restaurants' do
+	include Helper
 
 	before do
-		visit('/')
-		click_link('Sign up')
-		fill_in('Email', with: 'test@example.com')
-		fill_in('Password', with: 'testtest')
-		fill_in('Password confirmation', with: 'testtest')
-		click_button('Sign up')
+		signup(email: 'test@test.com', password: 'password123')
 	end
 
 	context 'no restaurants have been added' do
@@ -34,9 +31,7 @@ feature 'restaurants' do
 	context 'creating restaurants' do
 		scenario 'prompts user to fill out a form, then displays the new restaurant' do
 			visit('/')
-			click_link 'Add a restaurant'
-			fill_in 'Name', with: 'KFC'
-			click_button 'Create Restaurant'
+			add_restaurant(name: 'KFC')
 			expect(page).to have_content 'KFC'
 			expect(current_path).to eq '/restaurants'
 		end
@@ -51,9 +46,7 @@ feature 'restaurants' do
 		context 'an invalid restaurant' do
 	    it 'does not let you submit a name that is too short' do
 				visit('/')
-	      click_link 'Add a restaurant'
-	      fill_in 'Name', with: 'kf'
-	      click_button 'Create Restaurant'
+	      add_restaurant(name: 'kf')
 	      expect(page).not_to have_css 'h2', text: 'kf'
 	      expect(page).to have_content 'error'
 	    end
@@ -80,20 +73,12 @@ feature 'restaurants' do
 	context 'edit restaurants' do
 		before do
 			visit('/')
-			click_link 'Add a restaurant'
-			fill_in 'Name', with: 'Itsu'
-			click_button 'Create Restaurant'
+			add_restaurant(name: 'Itsu')
 			click_link 'Sign out'
 			visit('/')
-			click_link('Sign up')
-			fill_in('Email', with: 'testuser@example.com')
-			fill_in('Password', with: 'testtest')
-			fill_in('Password confirmation', with: 'testtest')
-			click_button('Sign up')
+			signup(email: 'tester@tester.com', password: 'password123')
 			visit('/')
-			click_link 'Add a restaurant'
-			fill_in 'Name', with: 'KFC'
-			click_button 'Create Restaurant'
+			add_restaurant(name: 'KFC')
 		end
 
 		scenario 'let a user edit a restaurant that they created' do
@@ -117,20 +102,12 @@ feature 'restaurants' do
 	context 'deleting restaurants' do
 		before do
 			visit('/')
-			click_link 'Add a restaurant'
-			fill_in 'Name', with: 'Itsu'
-			click_button 'Create Restaurant'
+			add_restaurant(name: 'Itsu')
 			click_link 'Sign out'
 			visit('/')
-			click_link('Sign up')
-			fill_in('Email', with: 'testuser@example.com')
-			fill_in('Password', with: 'testtest')
-			fill_in('Password confirmation', with: 'testtest')
-			click_button('Sign up')
+			signup(email: 'tester@tester.com', password: 'password123')
 			visit('/')
-			click_link 'Add a restaurant'
-			fill_in 'Name', with: 'KFC'
-			click_button 'Create Restaurant'
+			add_restaurant(name: 'KFC')
 		end
 
 		scenario 'removes a restaurant that they created when a user clicks a delete link' do
