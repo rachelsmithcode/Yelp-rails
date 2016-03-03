@@ -21,4 +21,23 @@ feature 'reviewing' do
     expect(page).to have_content('You have already reviewed this restaurant')
   end
 
+  scenario 'user can only delete a review the user created' do
+    signup(email: "asd@asd.com", password: "password123")
+    add_review(thoughts: 'so so')
+    click_link 'Delete review'
+    expect(page).to have_content('Review deleted successfully')
+    expect(page).not_to have_content('so so')
+  end
+
+  scenario 'user cannot delete a review another user created' do
+    signup(email: "asd@asd.com", password: "password123")
+    add_review(thoughts: 'so so')
+    click_link 'Sign out'
+    signup(email: "cat@cat.com", password: "password123")
+    click_link 'Delete review'
+    expect(page).not_to have_content('Review deleted successfully')
+    expect(page).to have_content('Cannot delete this review as you did not add it')
+    expect(page).to have_content('so so')
+  end
+
 end
