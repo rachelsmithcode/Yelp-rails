@@ -15,11 +15,11 @@ module Helper
     click_button 'Create Restaurant'
   end
 
-  def add_review(thoughts: thoughts)
+  def add_review(thoughts: thoughts, rating: rating)
     visit '/restaurants'
     click_link 'Review KFC'
     fill_in "Thoughts", with: thoughts
-    select '3', from: 'Rating'
+    select rating, from: 'Rating'
     click_button 'Leave Review'
   end
 
