@@ -41,9 +41,11 @@ feature 'reviewing' do
   # end
 
   scenario 'displays an average rating for all reviews' do
-    add_review(thoughts: 'so so', rating: 3)
-    add_review(thoughts: 'asd', rating: 5)
-    expect(page).to have_content('Average rating: 4')
+    add_review(restaurant: 'KFC', thoughts: 'so so', rating: 3)
+    signup(email: "asd@asd.com", password: "password123")
+    visit('/')
+    add_review(restaurant: 'KFC', thoughts: 'asd', rating: 5)
+    expect(page).to have_content('Average rating: ★★★★☆')
   end
 
 
