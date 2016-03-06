@@ -1,15 +1,9 @@
-require 'rails_helper'
+class EndorsementsController < ApplicationController
 
-feature 'endorsing reviews' do
-  before do
-    kfc = Restaurant.create(name: 'KFC')
-    kfc.reviews.create(rating: 3, thoughts: 'It was tasty')
-  end
-
-  it 'a user can endorse a review, which increments the endorsement count', js: true do
-    visit '/restaurants'
-    click_link 'Endorse'
-    expect(page).to have_content("1 endorsement")
+  def create
+    @review = Review.find(params[:review_id])
+    @review.endorsements.create
+    render json: {new_endorsement_count: @review.endorsements.count}
   end
 
 end
